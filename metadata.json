@@ -1,0 +1,6 @@
+{
+  "name": "Zîn — Social Reels & Chat",
+  "description": "Connect with friends, chat in real time, and share vertical TikTok-style video and photo reels with Google Sign-In.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

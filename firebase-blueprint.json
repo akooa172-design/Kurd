@@ -1,0 +1,198 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public user profile for social discovery, friends, and posts",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "username": { "type": "string", "minLength": 2, "maxLength": 40, "pattern": "^[a-z0-9_]+$" },
+        "photoURL": { "type": "string", "maxLength": 150000 },
+        "bio": { "type": "string", "maxLength": 200 },
+        "followersCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "username", "createdAt", "updatedAt"]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Private user PII such as email address",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email", "maxLength": 160 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "updatedAt"]
+    },
+    "Friendship": {
+      "title": "Friendship",
+      "description": "Friend request or accepted friendship between two users",
+      "type": "object",
+      "properties": {
+        "users": { "type": "array" },
+        "requesterId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "recipientId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "status": { "type": "string", "enum": ["pending", "accepted"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["users", "requesterId", "recipientId", "status", "createdAt", "updatedAt"]
+    },
+    "Follow": {
+      "title": "Follow",
+      "description": "Follower relationship between two users",
+      "type": "object",
+      "properties": {
+        "followerId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "followingId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["followerId", "followingId", "createdAt"]
+    },
+    "ChatThread": {
+      "title": "ChatThread",
+      "description": "Direct message thread between two friends",
+      "type": "object",
+      "properties": {
+        "participants": { "type": "array" },
+        "lastMessage": { "type": "string", "maxLength": 500 },
+        "lastSenderId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["participants", "lastMessage", "lastSenderId", "createdAt", "updatedAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Individual message inside a direct chat thread",
+      "type": "object",
+      "properties": {
+        "participants": { "type": "array" },
+        "senderId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "text": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "type": { "type": "string", "enum": ["text", "post_share", "image", "file"] },
+        "mediaUrl": { "type": "string", "maxLength": 600000 },
+        "fileName": { "type": "string", "maxLength": 200 },
+        "fileSize": { "type": "number" },
+        "sharedPostId": { "type": "string", "maxLength": 128 },
+        "sharedPostCaption": { "type": "string", "maxLength": 300 },
+        "sharedPostMedia": { "type": "string", "maxLength": 600000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["participants", "senderId", "text", "type", "createdAt"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "TikTok-style vertical video or photo post",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "authorUsername": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "authorPhoto": { "type": "string", "maxLength": 500 },
+        "caption": { "type": "string", "maxLength": 500 },
+        "mediaType": { "type": "string", "enum": ["video", "image"] },
+        "mediaUrl": { "type": "string", "minLength": 1, "maxLength": 600000 },
+        "musicTitle": { "type": "string", "maxLength": 120 },
+        "musicUrl": { "type": "string", "maxLength": 600000 },
+        "overlayText": { "type": "string", "maxLength": 200 },
+        "overlayColor": { "type": "string", "maxLength": 30 },
+        "overlayPosition": { "type": "string", "enum": ["top", "center", "bottom"] },
+        "videoFilter": { "type": "string", "maxLength": 40 },
+        "taggedUsers": { "type": "array" },
+        "likesCount": { "type": "number" },
+        "commentsCount": { "type": "number" },
+        "visibility": { "type": "string", "enum": ["public", "friends"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorName", "authorUsername", "caption", "mediaType", "mediaUrl", "likesCount", "commentsCount", "visibility", "createdAt"]
+    },
+    "PostLike": {
+      "title": "PostLike",
+      "description": "User like record on a post",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "createdAt"]
+    },
+    "PostComment": {
+      "title": "PostComment",
+      "description": "Comment on a post",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "authorId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "authorPhoto": { "type": "string", "maxLength": 500 },
+        "text": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "authorId", "authorName", "text", "createdAt"]
+    },
+    "GameSession": {
+      "title": "GameSession",
+      "description": "Real-time 1v1 multiplayer game session between two friends",
+      "type": "object",
+      "properties": {
+        "gameType": { "type": "string", "enum": ["tictactoe", "rps"] },
+        "players": { "type": "array" },
+        "creatorId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "turnUid": { "type": "string", "maxLength": 128 },
+        "board": { "type": "array" },
+        "rpsChoices": { "type": "object" },
+        "scores": { "type": "object" },
+        "status": { "type": "string", "enum": ["playing", "finished"] },
+        "winnerUid": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["gameType", "players", "creatorId", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Public user profiles"
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": { "$ref": "#/entities/UserPrivateInfo" },
+      "description": "Private user email & settings"
+    },
+    "/friendships/{friendshipId}": {
+      "schema": { "$ref": "#/entities/Friendship" },
+      "description": "Friendships and friend requests"
+    },
+    "/follows/{followId}": {
+      "schema": { "$ref": "#/entities/Follow" },
+      "description": "Follower relationships between users"
+    },
+    "/chats/{chatId}": {
+      "schema": { "$ref": "#/entities/ChatThread" },
+      "description": "Direct chat threads"
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Messages in a direct chat thread"
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/Post" },
+      "description": "TikTok-style vertical video and photo posts"
+    },
+    "/posts/{postId}/likes/{userId}": {
+      "schema": { "$ref": "#/entities/PostLike" },
+      "description": "Post likes"
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/PostComment" },
+      "description": "Post comments"
+    },
+    "/games/{gameId}": {
+      "schema": { "$ref": "#/entities/GameSession" },
+      "description": "Real-time 1v1 multiplayer games with friends"
+    }
+  }
+}
